@@ -176,8 +176,6 @@ def draw(current_pole, player, enemies, heal_potions):
                         
                         print(potion.icon, end="")
                         break
-                    elif (potion.pos.x == j and potion.pos.y == i) and (current_pole.matrix[i][j] == "◻ "):
-                        print("◻ ", end="")
             else:
                 print(current_pole.matrix[i][j], end="")
         print()
