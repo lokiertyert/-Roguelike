@@ -146,7 +146,7 @@ class Pole:
                 if i == 0 or j == 0 or i == width-1 or j == height-1:
                     row.append("◻ ")
                 else:
-                    row.append("◼ ")
+                    row.append("  ")
             self.matrix.append(row)
 
 def brick_swap(current_pole):
@@ -173,6 +173,8 @@ def draw(current_pole, player, enemies, heal_potions):
                     if potion.pos.x == j and potion.pos.y == i and current_pole.matrix[i][j] != "◻ ":
                         print(potion.icon, end="")
                         break
+                    elif (potion.pos.x == j and potion.pos.y == i) and (current_pole.matrix[i][j] == "◻ "):
+                        print("◻ ", end="")
             else:
                 print(current_pole.matrix[i][j], end="")
         print()
@@ -217,15 +219,21 @@ b.money = 67
 b.max_hp = 100
 b.hp = 100
 b.damage = 25
+draw(p, b, enemies, heal_potions)
 
 while True:
-    key = msvcrt.getch().decode("utf-8").lower()
+    try:
+        key = msvcrt.getch()
+        
+        if key == b'\x1b':  # Escape
+            print("Игра завершена.")
+            break
+        
+        key = key.decode("cp1251").lower()
+    except:
+        continue
 
-    if key == 'q' or key == 'й':
-        print("Игра завершена.")
-        break
-
-    elif key == 'e' or key == 'у':
+    if key == 'e' or key == 'у':
         print("\n" + "="*30)
         b.display_inventory(heal_potions)
         os.system("cls")
