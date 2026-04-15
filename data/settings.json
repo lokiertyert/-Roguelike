@@ -1,1 +1,13 @@
-{}
+{
+  "map_width": 15,
+  "map_height": 50,
+  "enemies_count": 5,
+  "potions_count": 5,
+  "player": {
+    "name": "IlyaRub",
+    "hp": 100,
+    "damage": 25,
+    "money": 67
+  }
+}
+
