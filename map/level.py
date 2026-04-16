@@ -5,7 +5,7 @@ class Level:
         self.number = number
         self.width = width
         self.height = height
-        self.enemies_count = 5 + (number - 1) * 2
+        self.enemies_count = 4 + number
         self.heal_potions_count = 3 + (number - 1)
         self.required_kills = 5 * number  
 

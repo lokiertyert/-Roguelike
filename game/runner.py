@@ -14,18 +14,25 @@ from .combat import enemies_attack_nearby, find_closest_enemy
 
 settings = load_json("data/settings.json")
 enemies_settings = load_json("data/enemies.json")
+items_settings = load_json("data/items.json")
 
 def run():
     p = Pole(settings["map_width"], settings["map_height"])
     brick_swap(p)
 
     enemies = []
-    for i in range(settings["enemies_count"]):
-        enemies.append(Enemy(pos=Position(random.randint(1, p.width - 2), random.randint(1, p.height - 2)), id=i + 1))
+    while len(enemies) < settings["enemies_count"]:
+        y1 = random.randint(1, p.height - 2)
+        x1 = random.randint(1, p.width - 2)
+        if p.matrix[y1][x1] != "◻ ":
+            enemies.append(Enemy(pos=Position(x1, y1), id=len(enemies) + 1))
 
     heal_potions = []
-    for i in range(settings["potions_count"]):
-        heal_potions.append(heal_potion(pos=Position(random.randint(1, p.width - 2), random.randint(1, p.height - 2)), id=i + 1))
+    while len(heal_potions) < settings["potions_count"]:
+        y1 = random.randint(1, p.height - 2)
+        x1 = random.randint(1, p.width - 2)
+        if p.matrix[y1][x1] != "◻ " and p.matrix[y1][x1] != "🐥" and not any(enemy.pos == Position(x1, y1) for enemy in enemies):
+            heal_potions.append(heal_potion(pos=Position(x1, y1), id=len(heal_potions) + 1))
 
     b = Player()
     b.pos = Position(1, 1)

@@ -1,10 +1,11 @@
-[
-  {
+{
+  "tiger": {
     "name": "Тигр",
+    "type": "tigger",
     "icon": "🐯",
     "hp": 50,
     "damage": 10,
     "cost": 10,
     "exp": 20
   }
-]
+}
