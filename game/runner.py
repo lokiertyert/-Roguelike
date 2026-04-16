@@ -21,11 +21,11 @@ def run():
 
     enemies = []
     for i in range(settings["enemies_count"]):
-        enemies.append(Enemy(pos=Position(random.randint(1, p.height - 2), random.randint(1, p.width - 2)), id=i + 1))
+        enemies.append(Enemy(pos=Position(random.randint(1, p.width - 2), random.randint(1, p.height - 2)), id=i + 1))
 
     heal_potions = []
     for i in range(settings["potions_count"]):
-        heal_potions.append(heal_potion(pos=Position(random.randint(1, p.height - 2), random.randint(1, p.width - 2)), id=i + 1))
+        heal_potions.append(heal_potion(pos=Position(random.randint(1, p.width - 2), random.randint(1, p.height - 2)), id=i + 1))
 
     b = Player()
     b.pos = Position(1, 1)

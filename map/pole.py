@@ -6,10 +6,10 @@ class Pole:
         self.width = width
         self.height = height
         self.matrix = []
-        for i in range(width):
+        for i in range(height):
             row = []
-            for j in range(height):
-                if i == 0 or j == 0 or i == width - 1 or j == height - 1:
+            for j in range(width):
+                if i == 0 or j == 0 or i == height - 1 or j == width - 1:
                     row.append("◻ ")
                 else:
                     row.append("  ")
@@ -19,8 +19,20 @@ class Pole:
 def brick_swap(current_pole):
     t_width = current_pole.width
     t_height = current_pole.height
-    quality_swaps = t_width * t_height // 4
-    for i in range(quality_swaps):
-        x1 = random.randint(1, t_width - 2)
-        y1 = random.randint(1, t_height - 2)
-        current_pole.matrix[x1][y1] = "◻ "
+    
+    for x1 in range(1, t_width):
+        quality_swaps = 0
+        r_dig = random.randint(1, t_height)
+        for y1 in range(1, t_height):
+            if x1%2 == 0 and y1%2==0 and random.randint(1,2) == 2:
+               current_pole.matrix[y1][x1] = "◻ "
+               quality_swaps += 1
+        for y1 in range(1, t_height-1):
+            if current_pole.matrix[y1-1][x1] == "◻ " and current_pole.matrix[y1+1][x1] == "◻ " and quality_swaps != r_dig:
+                current_pole.matrix[y1][x1] = "◻ "
+                quality_swaps += 1
+                continue
+            quality_swaps += 1
+        
+    
+            
