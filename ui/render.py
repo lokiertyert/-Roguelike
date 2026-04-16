@@ -1,6 +1,6 @@
 def draw(current_pole, player, enemies, heal_potions):
-    for i in range(current_pole.width):
-        for j in range(current_pole.height):
+    for i in range(current_pole.height):
+        for j in range(current_pole.width):
             if player.pos.x == j and player.pos.y == i:
                 print(player.icon, end="")
             elif any(enemy.pos.x == j and enemy.pos.y == i for enemy in enemies):
