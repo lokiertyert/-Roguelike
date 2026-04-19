@@ -1,1 +1,1 @@
-# Utility package placeholder.
+from .json_loader import load_json

@@ -1,4 +1,5 @@
 import os
+import random
 from .base import Person
 from utils.input import read_key, wait_key
 
@@ -70,10 +71,11 @@ class Player(Person):
         print("Инвентарь (Нажмите e чтобы открыть)")
         print("Атаковать ближайшего врага (Нажмите f)")
 
-    def display_inventory(self, heal_potions):
+    def display_inventory(self):
         if not self.inventory:
             print("Инвентарь пуст")
             print("\nНажмите любую клавишу для продолжения")
+    
             wait_key()
             return
         

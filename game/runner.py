@@ -1,9 +1,10 @@
 import os
 import random
+
 from utils.json_loader import load_json
 from characters import Enemy, Player, Position
 from items import heal_potion
-from map import Pole, brick_swap
+from map import Level
 from ui import draw
 from utils.input import read_key, wait_key
 from .combat import enemies_attack_nearby, find_closest_enemy
@@ -12,12 +13,14 @@ settings = load_json("data/settings.json")
 enemies_settings = load_json("data/enemies.json")
 items_settings = load_json("data/items.json")
 
-def run():
-    p = Pole(settings["map_width"], settings["map_height"])
-    brick_swap(p)
+def run(level_number):
+    current_level = Level(level_number)
+    p = current_level.create_level()
+    
+
     
     enemies = []
-    while len(enemies) < settings["enemies_count"]:
+    while len(enemies) < settings["start_enemies_count"] + level_number:
         y1 = random.randint(1, p.height - 2)
         x1 = random.randint(1, p.width - 2)
         if p.matrix[y1][x1] != "◻":
@@ -38,6 +41,7 @@ def run():
     b.hp = settings["player"]["hp"]
     b.damage = settings["player"]["damage"]
     
+    b.display_status()
     draw(p, b, enemies, heal_potions)
 
     while True:
@@ -51,7 +55,7 @@ def run():
 
         if key in ("e", "у"):
             print("\n" + "= " * 30)
-            b.display_inventory(heal_potions)
+            b.display_inventory()
             os.system("cls")
             b.display_status()
             print()
@@ -61,8 +65,7 @@ def run():
         elif key in ("f", "а"):
             closest, dist = find_closest_enemy(b, enemies)
             if closest is None:
-                print("На поле нет врагов! Вы победили!")
-                break
+                print("На поле нет врагов! Для перехода не следующий этаж нажмите z")
             if dist == 1:
                 print(f"\nТы атакуешь врага! Нанесено {b.damage} дамага.")
                 enemy_died = not closest.take_damage(b.damage)
@@ -100,3 +103,10 @@ def run():
         b.display_status()
         print()
         draw(p, b, enemies, heal_potions)
+
+        if key in ("z", "я"):
+            closest = find_closest_enemy(b, enemies)
+            if closest is None:
+                level_number += 1
+                os.system("cls")
+                run(level_number)
