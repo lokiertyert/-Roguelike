@@ -1,16 +1,12 @@
 import os
 import random
-
-from utils.json_loader import load_json 
-
+from utils.json_loader import load_json
 from characters import Enemy, Player, Position
 from items import heal_potion
 from map import Pole, brick_swap
 from ui import draw
 from utils.input import read_key, wait_key
-
 from .combat import enemies_attack_nearby, find_closest_enemy
-
 
 settings = load_json("data/settings.json")
 enemies_settings = load_json("data/enemies.json")
@@ -19,19 +15,19 @@ items_settings = load_json("data/items.json")
 def run():
     p = Pole(settings["map_width"], settings["map_height"])
     brick_swap(p)
-
+    
     enemies = []
     while len(enemies) < settings["enemies_count"]:
         y1 = random.randint(1, p.height - 2)
         x1 = random.randint(1, p.width - 2)
-        if p.matrix[y1][x1] != "◻ ":
+        if p.matrix[y1][x1] != "◻":
             enemies.append(Enemy(pos=Position(x1, y1), id=len(enemies) + 1))
 
     heal_potions = []
     while len(heal_potions) < settings["potions_count"]:
         y1 = random.randint(1, p.height - 2)
         x1 = random.randint(1, p.width - 2)
-        if p.matrix[y1][x1] != "◻ " and p.matrix[y1][x1] != "🐥" and not any(enemy.pos == Position(x1, y1) for enemy in enemies):
+        if p.matrix[y1][x1] != "◻" and not any(e.pos.x == x1 and e.pos.y == y1 for e in enemies):
             heal_potions.append(heal_potion(pos=Position(x1, y1), id=len(heal_potions) + 1))
 
     b = Player()
@@ -41,20 +37,20 @@ def run():
     b.max_hp = settings["player"]["hp"]
     b.hp = settings["player"]["hp"]
     b.damage = settings["player"]["damage"]
+    
     draw(p, b, enemies, heal_potions)
 
     while True:
         try:
             key = read_key()
-
-            if key == "\x1b":  # Выход через эскейп
+            if key == "\x1b":
                 print("Игра завершена.")
                 break
         except:
             continue
 
-        if key == "e" or key == "у":
-            print("\n" + "=" * 30)
+        if key in ("e", "у"):
+            print("\n" + "= " * 30)
             b.display_inventory(heal_potions)
             os.system("cls")
             b.display_status()
@@ -62,14 +58,13 @@ def run():
             draw(p, b, enemies, heal_potions)
             continue
 
-        # АТАКА
-        elif key == "f" or key == "а":
+        elif key in ("f", "а"):
             closest, dist = find_closest_enemy(b, enemies)
             if closest is None:
                 print("На поле нет врагов! Вы победили!")
                 break
             if dist == 1:
-                print(f"\n Ты атакуешь врага! Нанесено {b.damage} дамага.")
+                print(f"\nТы атакуешь врага! Нанесено {b.damage} дамага.")
                 enemy_died = not closest.take_damage(b.damage)
                 print(f"У энеми осталось {closest.hp:.0f} HP.")
                 if enemy_died:
@@ -83,7 +78,7 @@ def run():
                         print("как ты проиграл ваще...")
                         break
             else:
-                print(f"Зачем ты попросту мечом машешь?...")
+                print("Зачем ты попросту мечом машешь?...")
             print("\nНажмите любую клавишу для продолжения...")
             wait_key()
             os.system("cls")
@@ -92,10 +87,10 @@ def run():
             draw(p, b, enemies, heal_potions)
             continue
 
-        b.move(key, p, heal_potions)
-
+        b.move(key, p, heal_potions, enemies)
+        
         for enemy in enemies:
-            enemy.move(random.choice(["w", "a", "s", "d"]), p)
+            enemy.move(random.choice(["w", "a", "s", "d"]), p, b, enemies)
 
         if not enemies_attack_nearby(b, enemies):
             print("\nВы нафидонили бомжу на этой локации. Последняя надежда канула в лету")
