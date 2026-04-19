@@ -1,6 +1,6 @@
 {
   "map_width": 51,
-  "map_height": 15,
+  "map_height": 8,
   "enemies_count": 5,
   "potions_count": 5,
   "player": {
