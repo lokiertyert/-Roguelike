@@ -3,11 +3,13 @@ from .base import Person
 from utils.input import read_key, wait_key
 
 class Player(Person):
-    def __init__(self, name=None, pos=None, damage=25, hp=100, money=0, icon="🐥"):
-        super().__init__(pos, damage, hp)
+    def __init__(self, name=None, pos=None, damage=25, hp=100, money=0, exp = 0, exp_need = 80, lvl = 1, icon="🐥"):
+        super().__init__(pos, damage, hp, exp)
         self.name = name
         self.money = money
         self.icon = icon
+        self.lvl = lvl
+        self.exp_need = exp_need
         self.inventory = []
 
     def move(self, input_key, pole, heal_potions, enemies):
@@ -63,47 +65,4 @@ class Player(Person):
         for potion in collected_potions:
             heal_potions.remove(potion)
 
-    def display_status(self): 
-        print(f"Игрок: {self.name}")
-        print(f"HP: {self.hp:.0f}/{self.max_hp}")
-        print(f"Деньги: {self.money}")
-        print("Инвентарь (Нажмите e чтобы открыть)")
-        print("Атаковать ближайшего врага (Нажмите f)")
-
-    def display_inventory(self):
-        if not self.inventory:
-            print("Инвентарь пуст")
-            print("\nНажмите любую клавишу для продолжения")
     
-            wait_key()
-            return
-        
-        while True:
-            os.system("cls")
-            self.display_status()
-            print("\n=== ИНВЕНТАРЬ ===")
-            for i, potion in enumerate(self.inventory, 1):
-                print(f"{i}. {potion.name} — {potion.description}")
-
-            print("\nВведите номер зелья для использования (0 — выход): ")
-            key = read_key()
-            if key == "0":
-                return
-            try:
-                choice = int(key)
-                if 1 <= choice <= len(self.inventory):
-                    selected_potion = self.inventory[choice - 1]
-                    healed_amount = selected_potion.use(self)
-                    self.inventory.pop(choice - 1)
-                    print(f"\nИспользовано: {selected_potion.name}")
-                    print(f"Восстановлено {healed_amount:.0f} HP!")
-                    print(f"Текущее HP: {self.hp:.0f}/{self.max_hp}")
-                    print("\nНажмите любую клавишу для продолжения")
-                    wait_key()
-                    return
-                else:
-                    print("\nНеверный номер.")
-                    wait_key()
-            except ValueError:
-                print("\nВведите число.")
-                wait_key()

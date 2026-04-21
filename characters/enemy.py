@@ -1,10 +1,11 @@
 from .base import Person
 
 class Enemy(Person):
-    def __init__(self, id=0, pos=None, damage=0, hp=0, icon="🐯"):
-        super().__init__(pos, damage, hp)
+    def __init__(self, id=0, pos=None, damage=0, hp=0, exp = 0, cost = 0, icon="🐯"):
+        super().__init__(pos, damage, hp, exp)
         self.id = id
         self.icon = icon
+        self.cost = cost
 
     def move(self, input_key, pole, player, enemies):
         if (input_key == "w" or input_key == "ц") and self.pos.y > 0:
