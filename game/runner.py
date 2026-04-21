@@ -104,7 +104,7 @@ def run(level_number, b):
         b.move(key, p, heal_potions, enemies)
         
         for enemy in enemies:
-            enemy.move(random.choice(["w", "a", "s", "d"]), p, b, enemies)
+            enemy.move(p, b, enemies)
 
         if not enemies_attack_nearby(b, enemies):
             print("\nВы нафидонили бомжу на этой локации. Последняя надежда канула в лету")
