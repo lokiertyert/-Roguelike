@@ -1,7 +1,7 @@
 {
   "map_width": 51,
-  "map_height": 15,
-  "start_enemies_count": 5,
+  "map_height": 7,
+  "start_enemies_count": 4,
   "potions_count": 5,
   "player": {
     "name": "IlyaRub",

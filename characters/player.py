@@ -1,5 +1,4 @@
 import os
-import random
 from .base import Person
 from utils.input import read_key, wait_key
 

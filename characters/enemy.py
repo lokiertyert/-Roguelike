@@ -1,7 +1,7 @@
 from .base import Person
 
 class Enemy(Person):
-    def __init__(self, id=0, pos=None, damage=10, hp=50, icon="🐯"):
+    def __init__(self, id=0, pos=None, damage=0, hp=0, icon="🐯"):
         super().__init__(pos, damage, hp)
         self.id = id
         self.icon = icon

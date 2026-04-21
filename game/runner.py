@@ -1,5 +1,6 @@
 import os
 import random
+import sys
 
 from utils.json_loader import load_json
 from characters import Enemy, Player, Position
@@ -17,14 +18,12 @@ def run(level_number):
     current_level = Level(level_number)
     p = current_level.create_level()
     
-
-    
     enemies = []
     while len(enemies) < settings["start_enemies_count"] + level_number:
         y1 = random.randint(1, p.height - 2)
         x1 = random.randint(1, p.width - 2)
         if p.matrix[y1][x1] != "◻":
-            enemies.append(Enemy(pos=Position(x1, y1), id=len(enemies) + 1))
+            enemies.append(Enemy(hp = 40 + (10 * level_number), damage = 10 * level_number, pos=Position(x1, y1), id=len(enemies) + 1))
 
     heal_potions = []
     while len(heal_potions) < settings["potions_count"]:
@@ -42,6 +41,7 @@ def run(level_number):
     b.damage = settings["player"]["damage"]
     
     b.display_status()
+    print(f"LEVEL: {level_number}")
     draw(p, b, enemies, heal_potions)
 
     while True:
@@ -58,6 +58,7 @@ def run(level_number):
             b.display_inventory()
             os.system("cls")
             b.display_status()
+            print(f"LEVEL: {level_number}")
             print()
             draw(p, b, enemies, heal_potions)
             continue
@@ -79,13 +80,14 @@ def run(level_number):
                     print(f"У тя осталось {b.hp:.0f} HP.")
                     if player_died:
                         print("как ты проиграл ваще...")
-                        break
+                        sys.exit()
             else:
                 print("Зачем ты попросту мечом машешь?...")
             print("\nНажмите любую клавишу для продолжения...")
             wait_key()
             os.system("cls")
             b.display_status()
+            print(f"LEVEL: {level_number}")
             print()
             draw(p, b, enemies, heal_potions)
             continue
@@ -101,12 +103,15 @@ def run(level_number):
 
         os.system("cls")
         b.display_status()
+        print(f"LEVEL: {level_number}")
         print()
         draw(p, b, enemies, heal_potions)
 
         if key in ("z", "я"):
-            closest = find_closest_enemy(b, enemies)
-            if closest is None:
+            if len(enemies) == 0:
                 level_number += 1
                 os.system("cls")
                 run(level_number)
+            else:
+                print('Вы не можете переместиться на следуюший уровень, есть еще враги!')
+                wait_key()
