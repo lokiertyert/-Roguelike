@@ -2,6 +2,7 @@ import os
 import random
 import sys
 
+from shop.shop import display_shop
 from utils.json_loader import load_json
 from characters import Enemy, Player, Position
 from characters.enemy import move_tw
@@ -111,6 +112,13 @@ def run(level_number, b):
             draw_tg(p, b, enemies, heal_potions, current_level.number)
             continue
 
+        elif key in ("q", "й"):
+            print("\n" + "= " * 30)
+            display_shop(b, b.money, heal_potions)
+            os.system("cls")
+            draw_tg(p, b, enemies, heal_potions, current_level.number)
+            continue
+
         elif key in ("f", "а"):
             closest, dist = find_closest_enemy(b, enemies)
             if closest is None:
@@ -147,6 +155,7 @@ def run(level_number, b):
                 os.system("cls")
                 draw_tg(p, b, enemies, heal_potions, current_level.number)
                 print("Зачем ты попросту мечом машешь?...")
+
 
             print("\nНажмите любую клавишу для продолжения...")
             wait_key()

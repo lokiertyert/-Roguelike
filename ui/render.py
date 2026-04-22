@@ -1,7 +1,5 @@
 import os
-from characters.base import Person
 from utils.input import read_key, wait_key
-from characters.player import Player
 
 def draw(current_pole, player, enemies, heal_potions):
     for i in range(current_pole.height):
@@ -36,7 +34,6 @@ def display_inventory(self):
     if not self.inventory:
         print("Инвентарь пуст")
         print("\nНажмите любую клавишу для продолжения")
-
         wait_key()
         return
     
