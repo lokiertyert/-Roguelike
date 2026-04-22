@@ -32,7 +32,10 @@ def display_status(self):
 
 def display_inventory(self):
     if not self.inventory:
-        print("Инвентарь пуст")
+        os.system("cls")
+        display_status(self)
+        print("\n=== ИНВЕНТАРЬ ===")
+        print("\nИнвентарь пуст")
         print("\nНажмите любую клавишу для продолжения")
         wait_key()
         return

@@ -54,7 +54,6 @@ def run(level_number, b):
             continue
 
         if key in ("e", "у"):
-            print("\n" + "= " * 30)
             display_inventory(b)
             os.system("cls")
             display_status(b)
