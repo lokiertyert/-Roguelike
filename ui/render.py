@@ -48,11 +48,15 @@ def display_inventory(self):
             print(f"{i}. {potion.name} — {potion.description}")
 
         print("\nВведите номер зелья для использования (0 — выход): ")
-        key = read_key()
-        if key == "0":
+        try:
+            key = int(input())
+        except:
+            print("Введите номер числом")
+            continue
+        if key == 0:
             return
         try:
-            choice = int(key)
+            choice = key
             if 1 <= choice <= len(self.inventory):
                 selected_potion = self.inventory[choice - 1]
                 healed_amount = selected_potion.use(self)
@@ -69,3 +73,9 @@ def display_inventory(self):
         except ValueError:
             print("\nВведите число.")
             wait_key()
+
+def draw_tg(p, b, enemies, heal_potions, level_number):
+    display_status(b)
+    print(f"Этаж: {level_number}")
+    print()
+    draw(p, b, enemies, heal_potions)
