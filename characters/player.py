@@ -56,9 +56,8 @@ class Player(Person):
                     self.pos.x += 1
 
 
-        # Сбор зелий (безопасное удаление во время итерации)
         collected_potions = []
-        for potion in heal_potions[:]:
+        for potion in heal_potions:
             if potion.pos.x == self.pos.x and potion.pos.y == self.pos.y:
                 self.inventory.append(potion)
                 collected_potions.append(potion)

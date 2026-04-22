@@ -6,11 +6,12 @@
     "heal_percent": 0.25,
     "cost": 25
   },
-    "big_heal_potion": {
-        "name": "Большое зелье здоровья",
-        "description": "Восстанавливает 50% от максимального здоровья",
-        "icon": "❤️",
-        "heal_percent": 0.5,
-        "cost": 60
-    }
+  
+  "big_heal_potion": {
+    "name": "Большое зелье здоровья",
+    "description": "Восстанавливает 50% от максимального здоровья",
+    "icon": "❤️",
+    "heal_percent": 0.5,
+    "cost": 60
+  }
 }

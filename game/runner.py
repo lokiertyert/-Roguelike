@@ -2,8 +2,9 @@ import os
 import random
 import sys
 
+from shop.shop import display_shop
 from utils.json_loader import load_json
-from characters import Enemy, Player, Position
+from characters import Enemy, Position
 from items import heal_potion
 from map import Level
 from ui.render import draw, display_inventory, display_status
@@ -62,6 +63,16 @@ def run(level_number, b):
             draw(p, b, enemies, heal_potions)
             continue
 
+        elif key in ("q", "й"):
+            print("\n" + "= " * 30)
+            display_shop(b, b.money, heal_potions)
+            os.system("cls")
+            display_status(b)
+            print(f"Этаж: {level_number}")
+            print()
+            draw(p, b, enemies, heal_potions)
+            continue
+
         elif key in ("f", "а"):
             closest, dist = find_closest_enemy(b, enemies)
             if closest is None:
@@ -92,6 +103,7 @@ def run(level_number, b):
                         sys.exit()
             else:
                 print("Зачем ты попросту мечом машешь?...")
+
             print("\nНажмите любую клавишу для продолжения...")
             wait_key()
             os.system("cls")
@@ -104,11 +116,12 @@ def run(level_number, b):
         b.move(key, p, heal_potions, enemies)
         
         for enemy in enemies:
-            enemy.move(random.choice(["w", "a", "s", "d"]), p, b, enemies)
+            enemy.move(p, b, enemies)
 
         if not enemies_attack_nearby(b, enemies):
             print("\nВы нафидонили бомжу на этой локации. Последняя надежда канула в лету")
-            break
+            sys.exit()
+            
         os.system("cls")
         display_status(b)
         print(f"Этаж: {level_number}")

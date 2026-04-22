@@ -15,3 +15,6 @@ if __name__ == "__main__":
     b.hp = settings["player"]["hp"]
     b.damage = settings["player"]["damage"]
     run(1, b)
+
+
+
