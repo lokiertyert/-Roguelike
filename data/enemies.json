@@ -3,9 +3,18 @@
     "name": "Тигр",
     "type": "tigger",
     "icon": "🐯",
-    "hp": 50,
+    "hp": 40,
     "damage": 10,
     "cost": 15,
     "exp": 20
+  },
+  "rabit": {
+    "name": "Кролик",
+    "type": "rabbit",
+    "icon": "🐰",
+    "hp": 25,
+    "damage": 5,
+    "cost": 10,
+    "exp": 10
   }
 }

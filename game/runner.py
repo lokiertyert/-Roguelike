@@ -4,9 +4,10 @@ import sys
 
 from utils.json_loader import load_json
 from characters import Enemy, Player, Position
+from characters.enemy import move_tw
 from items import heal_potion
 from map import Level
-from ui.render import draw, display_inventory, display_status
+from ui.render import draw, display_inventory, display_status, draw_tg
 from utils.input import read_key, wait_key
 from .combat import enemies_attack_nearby, find_closest_enemy
 
@@ -22,8 +23,55 @@ def run(level_number, b):
     while len(enemies) < settings["start_enemies_count"] + level_number:
         y1 = random.randint(1, p.height - 2)
         x1 = random.randint(1, p.width - 2)
-        if p.matrix[y1][x1] == "  ":
-            enemies.append(Enemy(hp = 40 + (10 * level_number), damage = 10 + (5 * level_number), pos=Position(x1, y1), id=len(enemies) + 1, cost = enemies_settings["tiger"]["cost"], exp = enemies_settings["tiger"]["exp"]))
+        if p.matrix[y1][x1] == "  " and level_number >= 3:
+            rr = random.randint(1, 10)
+            if rr in range(1,3):
+                enemies.append(
+                    Enemy(
+                        hp = enemies_settings["rabit"]["hp"] + (10 * level_number),
+                        damage = enemies_settings["rabit"]["damage"] + (5 * level_number),
+                        pos=Position(x1, y1), id=len(enemies) + 1, 
+                        cost = enemies_settings["rabit"]["cost"], 
+                        exp = enemies_settings["rabit"]["exp"], 
+                        icon = enemies_settings["rabit"]["icon"]
+                        )
+                    )
+            else:
+                enemies.append(
+                    Enemy(
+                        hp = enemies_settings["tiger"]["hp"] + (10 * level_number),
+                        damage = enemies_settings["tiger"]["damage"] + (5 * level_number),
+                        pos=Position(x1, y1), id=len(enemies) + 1, 
+                        cost = enemies_settings["tiger"]["cost"], 
+                        exp = enemies_settings["tiger"]["exp"], 
+                        icon = enemies_settings["tiger"]["icon"]
+                        )
+                    )
+        elif p.matrix[y1][x1] == "  " and level_number < 3:
+            rr = random.randint(1, 10)
+            if rr in range(1,7):
+                enemies.append(
+                    Enemy(
+                        hp = enemies_settings["rabit"]["hp"] + (10 * level_number),
+                        damage = enemies_settings["rabit"]["damage"] + (5 * level_number),
+                        pos=Position(x1, y1), id=len(enemies) + 1, 
+                        cost = enemies_settings["rabit"]["cost"], 
+                        exp = enemies_settings["rabit"]["exp"], 
+                        icon = enemies_settings["rabit"]["icon"]
+                        )
+                    )
+            else:
+                enemies.append(
+                    Enemy(
+                        hp = enemies_settings["tiger"]["hp"] + (10 * level_number),
+                        damage = enemies_settings["tiger"]["damage"] + (5 * level_number),
+                        pos=Position(x1, y1), id=len(enemies) + 1, 
+                        cost = enemies_settings["tiger"]["cost"], 
+                        exp = enemies_settings["tiger"]["exp"], 
+                        icon = enemies_settings["tiger"]["icon"]
+                        )
+                    )
+
 
     heal_potions = []
     while len(heal_potions) != settings["potions_count"]:
@@ -39,9 +87,7 @@ def run(level_number, b):
             b.pos.y = yy
             break
     
-    display_status(b)
-    print(f"Этаж: {level_number}")
-    draw(p, b, enemies, heal_potions)
+    draw_tg(p, b, enemies, heal_potions, current_level.number)
 
     while True:
         try:
@@ -52,14 +98,17 @@ def run(level_number, b):
         except:
             continue
 
+        b.move(key, p, heal_potions, enemies)
+        
+        move_tw(p, b, enemies)
+        os.system("cls")
+        draw_tg(p, b, enemies, heal_potions, current_level.number)
+
         if key in ("e", "у"):
             print("\n" + "= " * 30)
             display_inventory(b)
             os.system("cls")
-            display_status(b)
-            print(f"Этаж: {level_number}")
-            print()
-            draw(p, b, enemies, heal_potions)
+            draw_tg(p, b, enemies, heal_potions, current_level.number)
             continue
 
         elif key in ("f", "а"):
@@ -77,49 +126,46 @@ def run(level_number, b):
                     b.exp += closest.exp
                     if b.exp >= b.exp_need:
                         b.lvl += 1
+                        b.exp = b.exp - b.exp_need
                         b.exp_need = b.exp_need + b.exp_need // 3
-                        b.exp = 0
-                        b.max_hp += 10
-                        b.hp += 10
+                        b.max_hp += 25
+                        b.hp += b.max_hp//2
                         b.damage += 10
                     enemies.remove(closest)
                 else:
+                    os.system("cls")
                     print(f"Враг не стерпел и наносит {closest.damage} урона.")
                     player_died = not b.take_damage(closest.damage)
                     print(f"У тя осталось {b.hp:.0f} HP.")
+                    draw_tg(p, b, enemies, heal_potions, current_level.number)
                     if player_died:
                         print("как ты проиграл ваще...")
-                        sys.exit()
+                        return
+                
             else:
+                move_tw(p,b,enemies)
+                os.system("cls")
+                draw_tg(p, b, enemies, heal_potions, current_level.number)
                 print("Зачем ты попросту мечом машешь?...")
+
             print("\nНажмите любую клавишу для продолжения...")
             wait_key()
             os.system("cls")
-            display_status(b)
-            print(f"Этаж: {level_number}")
-            print()
-            draw(p, b, enemies, heal_potions)
-            continue
-
-        b.move(key, p, heal_potions, enemies)
-        
-        for enemy in enemies:
-            enemy.move(p, b, enemies)
+            draw_tg(p, b, enemies, heal_potions, current_level.number)
+            continue     
 
         if not enemies_attack_nearby(b, enemies):
+            b.icon = "❌"
+            draw_tg(p, b, enemies, heal_potions, current_level.number)
             print("\nВы нафидонили бомжу на этой локации. Последняя надежда канула в лету")
-            break
-        os.system("cls")
-        display_status(b)
-        print(f"Этаж: {level_number}")
-        print()
-        draw(p, b, enemies, heal_potions)
+            return
     
         if key in ("z", "я"):
             if len(enemies) == 0:
                 level_number += 1
                 os.system("cls")
                 run(level_number, b)
+                return
             else:
                 print('Вы не можете переместиться на следуюший уровень, есть еще враги!')
                 wait_key()
