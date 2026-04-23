@@ -1,5 +1,5 @@
 import os
-from utils.input import read_key, wait_key
+from utils.input import wait_key
 
 def draw(current_pole, player, enemies, heal_potions):
     for i in range(current_pole.height):
@@ -28,6 +28,7 @@ def display_status(self):
         print(f"Урон: {self.damage}")
         print(f"Деньги: {self.money}")
         print("Инвентарь (Нажмите e чтобы открыть)")
+        print("Магазин (Нажмите q чтобы открыть)")
         print("Атаковать ближайшего врага (Нажмите f)")
 
 def display_inventory(self):
@@ -74,8 +75,8 @@ def display_inventory(self):
             print("\nВведите число.")
             wait_key()
 
-def draw_tg(p, b, enemies, heal_potions, level_number):
-    display_status(b)
+def draw_tg(created_level, player, enemies, heal_potions, level_number):
+    display_status(player)
     print(f"Этаж: {level_number}")
     print()
-    draw(p, b, enemies, heal_potions)
+    draw(created_level, player, enemies, heal_potions)

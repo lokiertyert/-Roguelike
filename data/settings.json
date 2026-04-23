@@ -4,10 +4,10 @@
   "start_enemies_count": 4,
   "potions_count": 5,
   "player": {
-    "name": "IlyaRub",
+    "name": "Time Not Exist",
     "hp": 111,
     "damage": 25,
-    "money": 60
+    "money": 67
   }
 }
 

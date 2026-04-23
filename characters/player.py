@@ -13,7 +13,6 @@ class Player(Person):
         self.inventory = []
 
     def move(self, input_key, pole, heal_potions, enemies):
-        old_x, old_y = self.pos.x, self.pos.y
 
         if (input_key == "w" or input_key == "ц") and self.pos.y > 0:
             if pole.matrix[self.pos.y - 1][self.pos.x] != "◻ ":

@@ -5,7 +5,6 @@ from utils.json_loader import load_json
 items_settings = load_json("data/items.json")
 potion_settings = items_settings["heal_potion"]
 big_potion_settings = items_settings["big_heal_potion"]
-big_potion_settings = items_settings["big_heal_potion"]
 
 class heal_potion(items):
     def __init__(self, pos=None, id=0):

@@ -14,13 +14,13 @@ if __name__ == "__main__":
         os.system("cls")
         if key == "e" or key == "у":
             settings = load_json("data/settings.json")
-            b = Player()
-            b.pos = Position(1, 1)
-            b.name = settings["player"]["name"]
-            b.money = settings["player"]["money"]
-            b.max_hp = settings["player"]["hp"]
-            b.hp = settings["player"]["hp"]
-            b.damage = settings["player"]["damage"]
-            run(1, b)
+            player = Player()
+            player.pos = Position(1, 1)
+            player.name = settings["player"]["name"]
+            player.money = settings["player"]["money"]
+            player.max_hp = settings["player"]["hp"]
+            player.hp = settings["player"]["hp"]
+            player.damage = settings["player"]["damage"]
+            run(1, player)
         else:
             break

@@ -4,8 +4,8 @@
     "type": "tigger",
     "icon": "🐯",
     "hp": 40,
-    "damage": 10,
-    "cost": 15,
+    "damage": 15,
+    "cost": 20,
     "exp": 20
   },
   "rabit": {
